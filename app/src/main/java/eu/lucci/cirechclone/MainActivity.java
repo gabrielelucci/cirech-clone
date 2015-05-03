@@ -147,6 +147,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        //make the app full screen.
         if (hasFocus) {
             mGameView.setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -209,6 +210,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
     public void onShutdown() {
     }
 
+    /**
+     * This represents the file writer task, it is an asynchronous task, so we can save data
+     * without hogging the main UI thread. Also this will avoid ANR dialog if something goes wrong.
+     * See also the file reader task.
+     * @see eu.lucci.cirechclone.MainActivity.ReadFileTask
+     * @see android.os.AsyncTask
+     */
     private class SaveFileTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -219,15 +227,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
                 dout.writeInt(mGame.highScore);
                 dout.close();
             } catch (FileNotFoundException e) {
-                Log.e("save file task", "file not found");
+                Log.e("SaveFileTask", "file not found");
             } catch (IOException e) {
-                Log.e("save file task", "error while closing the stream");
+                Log.e("SaveFileTask", "error while closing the stream");
             }
-            Log.d("file task", "file saved successfully");
+            Log.d("SaveFileTask", "file saved successfully");
             return null;
         }
     }
 
+    /**
+     * This represents the file reader task.
+     * @see eu.lucci.cirechclone.MainActivity.SaveFileTask
+     */
     private class ReadFileTask extends AsyncTask<Void, Void, Integer> {
 
         @Override
@@ -239,11 +251,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
                 data = din.readInt();
                 din.close();
             } catch (FileNotFoundException e) {
-                Log.e("read file task", "file not found");
+                Log.e("ReadFileTask", "file not found");
             } catch (IOException e) {
-                Log.e("read file task", "error while closing the stream");
+                Log.e("ReadFileTask", "error while closing the stream");
             }
-            Log.d("file task", "file read successfully");
+            Log.d("ReadFileTask", "file read successfully");
             return data;
         }
 
@@ -252,6 +264,5 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
             mGame.highScore = integer;
         }
     }
-
 
 }

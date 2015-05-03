@@ -24,23 +24,35 @@ import android.util.AttributeSet;
 import android.view.SurfaceView;
 
 /**
- * TODO: document your custom view class.
+ * This class represents the game rendering engine. It uses the drawing surface of SurfaceView.
+ * This is a temporary solution, I want to replace it with a GLSurfaceView.
+ * @author gabriele lucci
+ * @version 1/5/2015
+ * @see android.view.SurfaceView
  */
 public class GameView extends SurfaceView implements GameRenderer {
     /**
-     * Colore di sfondo.
+     * This is the background color.
      */
-    private final int BACKGROUND = Color.BLACK;
+    public final int BACKGROUND = Color.BLACK;
     /**
-     * Colore del testo.
+     * This is the text color.
      */
-    private final int TEXT_COLOR = Color.WHITE;
-
+    public final int TEXT_COLOR = Color.WHITE;
+    /**
+     * This is the drawable model for the ball.
+     */
     private BallDrawable ballDrawable;
+    /**
+     * This is the drawable model for the barriers.
+     */
     private BarrierDrawable barrierDrawable;
     private Paint mPaint;
     private boolean isReady;
     // measures and bounds
+    /**
+     * Size of the text. To be initialized by the method measure()
+     */
     private float textSize;
 
     /**
@@ -48,7 +60,7 @@ public class GameView extends SurfaceView implements GameRenderer {
      */
     public GameView(Context context) {
         super(context);
-        init(null, 0);
+        init();
     }
 
     /**
@@ -58,7 +70,7 @@ public class GameView extends SurfaceView implements GameRenderer {
      */
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(attrs, 0);
+        init();
     }
 
     /**
@@ -69,15 +81,13 @@ public class GameView extends SurfaceView implements GameRenderer {
      */
     public GameView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs, defStyle);
+        init();
     }
 
     /**
-     *
-     * @param attrs
-     * @param defStyle
+     * This method initializes the models.
      */
-    private void init(AttributeSet attrs, int defStyle) {
+    private void init() {
         ballDrawable = new BallDrawable();
         barrierDrawable = new BarrierDrawable();
         mPaint = new Paint();
@@ -104,14 +114,14 @@ public class GameView extends SurfaceView implements GameRenderer {
 
     /**
      * @param canvas
-     * @param game
+     * @param game the game to be rendered.
      */
     private synchronized void render(Canvas canvas, CirechGame game) {
         if (canvas == null) return;
         //draw background
         canvas.drawColor(BACKGROUND);
         switch (game.getCurrentState()) {
-            case CirechGame.MENU_STATE:
+            case CirechGame.MENU_STATE:     //draw menu state
                 //ball
                 mPaint.setColor(game.currentColor);
                 ballDrawable.draw(canvas, mPaint);
@@ -121,16 +131,15 @@ public class GameView extends SurfaceView implements GameRenderer {
                 canvas.drawText("High Score: " + game.highScore, 0, textSize * 2, mPaint);
                 canvas.drawText("Swipe down to start.", 0, textSize * 3, mPaint);
                 break;
-            case CirechGame.PLAY_STATE:
+            case CirechGame.PLAY_STATE:     //draw the game in play state
                 //draw models
                 drawModels(canvas, game);
                 //draw score
                 mPaint.setColor(TEXT_COLOR);
                 canvas.drawText("" + game.score, 0, getHeight() - 2, mPaint);
                 break;
-            case CirechGame.PAUSE_STATE:
-                //draw models
-                drawModels(canvas, game);
+            case CirechGame.PAUSE_STATE:    //draw paused game
+                drawModels(canvas, game);   //draw models as they are
                 //with transparency layer
                 mPaint.setColor(BACKGROUND);
                 mPaint.setAlpha(223);
@@ -139,7 +148,7 @@ public class GameView extends SurfaceView implements GameRenderer {
                 mPaint.setColor(TEXT_COLOR);
                 canvas.drawText("Paused game. Tap to resume.", 0, textSize, mPaint);
                 break;
-            case CirechGame.GAME_OVER_STATE:
+            case CirechGame.GAME_OVER_STATE:    //draw game over screen
                 mPaint.setColor(game.currentColor);
                 ballDrawable.draw(canvas, mPaint);
                 mPaint.setColor(TEXT_COLOR);
@@ -149,18 +158,18 @@ public class GameView extends SurfaceView implements GameRenderer {
                 break;
             default:
         }
-
     }
 
     /**
-     * @param canvas
-     * @param game
+     * This method draws the game objects.
+     * @param canvas    the target canvas
+     * @param game      the game to draw
      */
     private void drawModels(Canvas canvas, CirechGame game) {
-        //ball
-        mPaint.setColor(game.currentColor);
-        ballDrawable.draw(canvas, mPaint);
-        //barriers
+        //draw ball
+        mPaint.setColor(game.currentColor);     //pick the color from the game value
+        ballDrawable.draw(canvas, mPaint);      //draw on canvas
+        //draw barriers one by one
         for (Barrier b : game.barriers) {
             barrierDrawable.x = b.position * barrierDrawable.k;
             mPaint.setColor(b.color);
@@ -169,7 +178,7 @@ public class GameView extends SurfaceView implements GameRenderer {
     }
 
     /**
-     *
+     * Dynamically sets the size of the models.
      */
     public void measure() {
         //measure
@@ -185,14 +194,14 @@ public class GameView extends SurfaceView implements GameRenderer {
     /**
      * Check if the surface is ready to draw
      *
-     * @return
+     * @return true if the SurfaceView is ready to draw
      */
     public boolean isReady() {
         return isReady;
     }
 
     /**
-     * @param isReady
+     * @param isReady pass true if the surface is ready to draw
      */
     public void setReady(boolean isReady) {
         this.isReady = isReady;
@@ -205,7 +214,6 @@ public class GameView extends SurfaceView implements GameRenderer {
         float centerX;
         float centerY;
         float radius;
-
         /**
           * @param canvas
          * @param paint
@@ -217,7 +225,7 @@ public class GameView extends SurfaceView implements GameRenderer {
     }
 
     /**
-     *
+     * Represents the drawable model of a barrier.
      */
     private class BarrierDrawable {
         float h;

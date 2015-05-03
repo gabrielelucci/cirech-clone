@@ -21,5 +21,5 @@ package eu.lucci.cirechclone;
  * Project: Cirech Clone
  */
 public interface GameEngine {
-    public void updateGame();
+    void updateGame();
 }

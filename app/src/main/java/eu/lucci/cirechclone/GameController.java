@@ -22,25 +22,46 @@ import android.view.View;
 
 /**
  * CONTROLLER.
- * Controller che gestisce l'input dell'utente.
- * Created by Gabriele Lucci on 10/08/14.
- * Project: Cirech Clone
+ * This represents the game controller, manages the way the user interacts with the app.
+ * Basically it is a touch event handler.
+ * Implements the callback to be invoked when a touch event is dispatched to this view.
+ * The callback will be invoked before the touch event is given to the view.
+ * @see android.view.View.OnTouchListener
  */
 public class GameController implements View.OnTouchListener {
+    /**
+     * The gesture detector. In this case needed to detect swipes.
+     */
     private GestureDetector swipeDetector;
+    /**
+     * The game to control.
+     */
     private CirechGame game;
 
+    /**
+     * @param view
+     * @param game
+     */
     public GameController(View view, CirechGame game) {
         this.game = game;
         swipeDetector = new GestureDetector(view.getContext(), new SwipeDetector());
         view.setOnTouchListener(this);
     }
 
+    /**
+     * Called when a touch event is dispatched to a view.
+     * @param view The view the touch event has been dispatched to.
+     * @param event The MotionEvent object containing full information about the event.
+     * @return True if the listener has consumed the event, false otherwise.
+     */
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public boolean onTouch(View view, MotionEvent event) {
         return swipeDetector.onTouchEvent(event);
     }
 
+    /**
+     * Swipe event detector.
+     */
     private class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
         private static final int LEFT_SWIPE = 0;
         private static final int RIGHT_SWIPE = 1;

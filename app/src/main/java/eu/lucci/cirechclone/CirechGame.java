@@ -258,7 +258,7 @@ public class CirechGame implements GameEngine {
     /**
      * Adds a Callback interface for this game.
      *
-     * @param callback
+     * @param callback Callback fucntion to add.
      */
     public void addCallback(Callback callback) {
         callbacks.add(callback);
@@ -267,7 +267,7 @@ public class CirechGame implements GameEngine {
     /**
      * Sets a Callback interface for this game, clearing all others previously added callbacks.
      *
-     * @param callback
+     * @param callback Callback function to set.
      */
     public void setCallback(Callback callback) {
         callbacks.clear();

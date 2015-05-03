@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CirechClone.iml" filepath="$PROJECT_DIR$/CirechClone.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cirech-clone.iml" filepath="$PROJECT_DIR$/cirech-clone.iml" />
     </modules>
   </component>
 </project>
-

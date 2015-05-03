@@ -46,7 +46,6 @@ public class GameThread extends Thread {
      */
     public GameThread(GameRenderer renderer, GameEngine game) {
         this.setName("game loop");
-        setPriority(MAX_PRIORITY);
         this.renderer = renderer;
         this.game = game;
     }
@@ -120,7 +119,7 @@ public class GameThread extends Thread {
      *
      */
     public interface Callback {
-        public void onStartup();
-        public void onShutdown();
+        void onStartup();
+        void onShutdown();
     }
 }
