@@ -37,7 +37,7 @@ public class CirechGame implements GameEngine {
     public static final float LIMIT = 1f;   // should be 1.
     private static final float K = 0.5f;    // base speed multipliers (default: 0.5)
     private static final float BASE_SPEED = K / (float) GameThread.PREFERRED_FPS;
-    private static final int NUMBER_OF_BARRIERS = 5;
+    private static final int NUMBER_OF_BARRIERS = 3;    //(default: 3)
     private static final float DISTANCE_DELTA = LIMIT / (float) NUMBER_OF_BARRIERS;
     /**
      * Current game color.
@@ -278,6 +278,6 @@ public class CirechGame implements GameEngine {
      *
      */
     public interface Callback {
-        public void stateChanged(int newState);
+        void stateChanged(int newState);
     }
 }

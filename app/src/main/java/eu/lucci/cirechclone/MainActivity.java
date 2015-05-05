@@ -201,6 +201,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      */
     @Override
     public void onStartup() {
+        Log.d("MainActivity", "game loop started");
     }
 
     /**
@@ -208,6 +209,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      */
     @Override
     public void onShutdown() {
+        Log.d("MainActivity", "game loop stopped");
     }
 
     /**

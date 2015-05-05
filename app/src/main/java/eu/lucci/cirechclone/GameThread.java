@@ -32,13 +32,14 @@ public class GameThread extends Thread {
     /**
      * Max renders to skip while the game is behind.
      */
-    private final static int MAX_SKIPPED_FRAMES = 0;
+    private final static int MAX_SKIPPED_FRAMES = 5;
 
     private GameEngine game;
     private GameRenderer renderer;
 
     private boolean running;    //thread running flag
-    private Callback callback;
+    private GameThread.Callback callback;
+
 
     /**
      * @param renderer the renderer
@@ -64,28 +65,23 @@ public class GameThread extends Thread {
      */
     public void run() {
         startup();
-        int skippedFrames;
+        //todo: separate tps from fps
+        long delta;
+        long beginTime;
+        long sleepPeriod;
         setRunning(true);
         while (running) {
-            long beginTime = System.currentTimeMillis();
-            skippedFrames = 0;
-            game.updateGame();
-            renderer.renderGame(game);
-            long delta = (System.currentTimeMillis() - beginTime);  // time elapsed
-            long sleepTime = FRAME_PERIOD - delta;
-            if (sleepTime > 0) {
+            beginTime = System.currentTimeMillis();
+            game.updateGame();          //update game logic
+            renderer.renderGame(game);  //update screen
+            delta = (System.currentTimeMillis() - beginTime);  // time elapsed
+            sleepPeriod = FRAME_PERIOD - delta;
+            if (sleepPeriod > 0) {
                 try {
-                    Thread.sleep(sleepTime);
+                    Thread.sleep(sleepPeriod);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            //todo modificare questa parte del loop, non funziona come dovrebbe
-            while (sleepTime < 0 && skippedFrames < MAX_SKIPPED_FRAMES) {
-                //running behind
-                game.updateGame();
-                sleepTime += FRAME_PERIOD;
-                skippedFrames++;
             }
         }
         shutdown();

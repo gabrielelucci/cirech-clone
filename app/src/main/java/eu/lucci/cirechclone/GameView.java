@@ -186,7 +186,7 @@ public class GameView extends SurfaceView implements GameRenderer {
         ballDrawable.centerX = getWidth() / 2;
         ballDrawable.centerY = getHeight() - ballDrawable.radius;
         barrierDrawable.h = getHeight() / 14;
-        barrierDrawable.k = (getHeight() - ballDrawable.radius * 2) / CirechGame.LIMIT;
+        barrierDrawable.k = (getHeight()- ballDrawable.radius * 2) / CirechGame.LIMIT;
         textSize = getWidth() / 15;
         mPaint.setTextSize(textSize);
     }
