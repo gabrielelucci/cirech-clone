@@ -51,6 +51,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * The game loop. (CONTROLLER)
      */
     private GameThread mLoop;
+    /**
+     * Debug tag.
+     */
+    private final static String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +102,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
                 mLoop.join();
                 retry = false;
             } catch (InterruptedException e) {
-                Log.e("loop", "interrupted");
+                Log.e(TAG, "interrupted");
             }
         }
-        Log.d("loop", "game thread stopped");
+        Log.d(TAG, "game thread stopped");
     }
 
     @Override
@@ -176,7 +180,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         mGameView.setReady(false);
-        Log.d("surface", "destroyed");
+        Log.d(TAG, "surface destroyed");
     }
 
     /**
@@ -201,7 +205,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      */
     @Override
     public void onStartup() {
-        Log.d("MainActivity", "game loop started");
+        Log.d(TAG, "game loop started");
     }
 
     /**
@@ -209,7 +213,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      */
     @Override
     public void onShutdown() {
-        Log.d("MainActivity", "game loop stopped");
+        Log.d(TAG, "game loop stopped");
     }
 
     /**
@@ -220,7 +224,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * @see android.os.AsyncTask
      */
     private class SaveFileTask extends AsyncTask<Void, Void, Void> {
-
+        final static String TAG = "SaveFileTask";
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -229,11 +233,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
                 dout.writeInt(mGame.highScore);
                 dout.close();
             } catch (FileNotFoundException e) {
-                Log.e("SaveFileTask", "file not found");
+                Log.e(TAG, "file not found");
             } catch (IOException e) {
-                Log.e("SaveFileTask", "error while closing the stream");
+                Log.e(TAG, "error while closing the stream");
             }
-            Log.d("SaveFileTask", "file saved successfully");
+            Log.d(TAG, "file saved successfully");
             return null;
         }
     }
@@ -243,7 +247,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * @see eu.lucci.cirechclone.MainActivity.SaveFileTask
      */
     private class ReadFileTask extends AsyncTask<Void, Void, Integer> {
-
+        final static String TAG = "ReadFileTask";
         @Override
         protected Integer doInBackground(Void... params) {
             int data = 0;
@@ -253,11 +257,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
                 data = din.readInt();
                 din.close();
             } catch (FileNotFoundException e) {
-                Log.e("ReadFileTask", "file not found");
+                Log.e(TAG, "file not found");
             } catch (IOException e) {
-                Log.e("ReadFileTask", "error while closing the stream");
+                Log.e(TAG, "error while closing the stream");
             }
-            Log.d("ReadFileTask", "file read successfully");
+            Log.d(TAG, "file read successfully");
             return data;
         }
 
