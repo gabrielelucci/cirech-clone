@@ -32,7 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- *
+ * Main activity of the app.
  */
 public class MainActivity extends Activity implements SurfaceHolder.Callback, CirechGame.Callback, GameThread.Callback {
     /**
@@ -48,11 +48,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      */
     private GameController mController;
     /**
-     * The game loop. (CONTROLLER)
+     * The game loop. (CONTROLLER).
      */
     private GameThread mLoop;
     /**
-     * Debug tag.
+     * Logcat tag for debugging.
      */
     private final static String TAG = "MainActivity";
 
@@ -224,7 +224,17 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * @see android.os.AsyncTask
      */
     private class SaveFileTask extends AsyncTask<Void, Void, Void> {
+        /**
+         * Logcat tag for debug.
+         */
         final static String TAG = "SaveFileTask";
+
+        /**
+         * This method performs background operations.
+         *
+         * @param params
+         * @return result of the background computation
+         */
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -243,11 +253,24 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
     }
 
     /**
-     * This represents the file reader task.
+     * This represents the file reader task. In this task we read the game data from file.
+     * Also this will avoid ANR dialog if something goes wrong.
+     * See also the file saving task.
      * @see eu.lucci.cirechclone.MainActivity.SaveFileTask
      */
     private class ReadFileTask extends AsyncTask<Void, Void, Integer> {
+        /**
+         * Logcat tag for debug.
+         */
         final static String TAG = "ReadFileTask";
+
+        /**
+         * This method performs background operations.
+         * The result of the computation must be returned by this step and will be passed back
+         * to the last step.
+         * @param params
+         * @return result of the background computation
+         */
         @Override
         protected Integer doInBackground(Void... params) {
             int data = 0;
@@ -265,6 +288,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
             return data;
         }
 
+        /**
+         * The result of the background computation is passed to this step as a parameter.
+         * Here we post the result of the async operation.
+         * @param integer result of the background computation
+         */
         @Override
         protected void onPostExecute(Integer integer) {
             mGame.highScore = integer;
