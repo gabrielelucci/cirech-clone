@@ -16,8 +16,6 @@
 
 package eu.lucci.cirechclone;
 
-import android.graphics.Color;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -39,10 +37,11 @@ public class CirechGame implements GameEngine {
     private static final float BASE_SPEED = K / (float) GameThread.PREFERRED_FPS;
     private static final int NUMBER_OF_BARRIERS = 3;    //(default: 3)
     private static final float DISTANCE_DELTA = LIMIT / (float) NUMBER_OF_BARRIERS;
+
     /**
      * Current game color.
      */
-    volatile int currentColor;    // current game color
+    volatile boolean currentColor;    // current game color
     /**
      *
      */
@@ -59,14 +58,6 @@ public class CirechGame implements GameEngine {
      * Current game state.
      */
     private int currentState;
-    /**
-     * 1st game color.
-     */
-    private int color0;
-    /**
-     * 2nd game color.
-     */
-    private int color1;
     /**
      * Holds the current barrier speed.
      */
@@ -91,7 +82,7 @@ public class CirechGame implements GameEngine {
      */
     public CirechGame() {
         init();
-        setCurrentState(MENU_STATE);
+        currentState = MENU_STATE;
         reset();
     }
 
@@ -119,16 +110,12 @@ public class CirechGame implements GameEngine {
     // GAME RELATED METHODS
 
     /**
-     * Resets the game.
+     * Resets the game. Called every time you start a new game.
      */
     public void reset() {
-        score = 0;
-        updateSpeed();
-        color0 = color1 = Color.HSVToColor(generateHSVColor());
-        do {
-            color1 = Color.HSVToColor(generateHSVColor());
-        } while (color0 == color1);
-        currentColor = color0;
+        score = 0;      //reset the score
+        updateSpeed();  //update the speed according to the initial score
+        currentColor = false;
         generateBarriers();
     }
 
@@ -136,11 +123,7 @@ public class CirechGame implements GameEngine {
      * Switches the current color, should be called by game controllers.
      */
     public void switchColor() {
-        if (currentColor == color0) {
-            currentColor = color1;
-        } else {
-            currentColor = color0;
-        }
+        currentColor = !currentColor;
     }
 
     /**
@@ -159,9 +142,9 @@ public class CirechGame implements GameEngine {
         float startPosition = 0, distance;
         for (int i = 0; i < barriers.length; i++) {
             if (rand.nextBoolean()) {
-                barriers[i] = new Barrier(color0, startPosition);
+                barriers[i] = new Barrier(false, startPosition);
             } else {
-                barriers[i] = new Barrier(color1, startPosition);
+                barriers[i] = new Barrier(true, startPosition);
             }
             distance = rand.nextFloat() * DISTANCE_DELTA + DISTANCE_DELTA;
             startPosition -= distance;
@@ -174,11 +157,7 @@ public class CirechGame implements GameEngine {
      */
     private void reGenerateBarrier(Barrier b) {
         b.position = lastBarrier.position - (rand.nextFloat() * DISTANCE_DELTA + DISTANCE_DELTA);
-        if (rand.nextBoolean()) {
-            b.color = color1;
-        } else {
-            b.color = color0;
-        }
+        b.color = rand.nextBoolean();
         lastBarrier = b;
     }
 
@@ -211,18 +190,6 @@ public class CirechGame implements GameEngine {
         }
     }
 
-    /**
-     * Generates a random (possibly bright) HSV color
-     *
-     * @return a random generated HSV color.
-     */
-    private float[] generateHSVColor() {
-        return new float[]{
-                rand.nextFloat() * 360f,        //hue
-                rand.nextFloat() / 0.5f + 0.5f, //sat
-                rand.nextFloat() / 0.5f + 0.5f, //val
-        };
-    }
 
     /**
      *

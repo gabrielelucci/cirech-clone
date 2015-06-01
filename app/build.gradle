@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'red'
+            keyAlias 'redKey'
             keyPassword 'rosarossa'
-            storeFile file('/home/gabriele/Documenti/keystores/redKey.jks')
-            storePassword 'rosarossa'
+            storeFile file('/home/gabriele/Documenti/myKeyStore.jks')
+            storePassword 'valgan'
         }
     }
     compileSdkVersion 22
@@ -31,6 +31,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
 }

@@ -21,10 +21,10 @@ package eu.lucci.cirechclone;
  * Project: Cirech Clone
  */
 public class Barrier {
-    int color;
+    boolean color;
     volatile float position;
 
-    public Barrier(int color, float position) {
+    public Barrier(boolean color, float position) {
         this.position = position;
         this.color = color;
     }

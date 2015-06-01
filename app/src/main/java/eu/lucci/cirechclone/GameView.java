@@ -21,7 +21,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceView;
+
+import java.util.Random;
 
 /**
  * This class represents the game rendering engine. It uses the drawing surface of SurfaceView.
@@ -31,6 +34,7 @@ import android.view.SurfaceView;
  * @see android.view.SurfaceView
  */
 public class GameView extends SurfaceView implements GameRenderer {
+    private static final String TAG = "GameView";
     /**
      * This is the background color.
      */
@@ -54,6 +58,15 @@ public class GameView extends SurfaceView implements GameRenderer {
      * Size of the text. To be initialized by the method measure()
      */
     private float textSize;
+    /**
+     * 1st game color.
+     */
+    private int color0;
+    /**
+     * 2nd game color.
+     */
+    private int color1;
+    private Random rand;
 
     /**
      * @param context
@@ -90,7 +103,31 @@ public class GameView extends SurfaceView implements GameRenderer {
     private void init() {
         ballDrawable = new BallDrawable();
         barrierDrawable = new BarrierDrawable();
+        rand = new Random();
         mPaint = new Paint();
+        resetColors();
+    }
+
+    public void resetColors() {
+        color0 = color1 = Color.HSVToColor(generateHSVColor()); //generate game colors
+        do {
+            color1 = Color.HSVToColor(generateHSVColor());
+        } while (color0 == color1); //make sure that we have two different colors
+        Log.d(TAG, "color0=" + color0);
+        Log.d(TAG, "color1=" + color1);
+    }
+
+    /**
+     * Generates a random (possibly bright) HSV color
+     *
+     * @return a random generated HSV color.
+     */
+    private float[] generateHSVColor() {
+        return new float[]{
+                rand.nextFloat() * 360f,        //hue
+                rand.nextFloat() / 0.5f + 0.5f, //sat
+                rand.nextFloat() / 0.5f + 0.5f, //val
+        };
     }
 
     /**
@@ -122,9 +159,8 @@ public class GameView extends SurfaceView implements GameRenderer {
         canvas.drawColor(BACKGROUND);
         switch (game.getCurrentState()) {
             case CirechGame.MENU_STATE:     //draw menu state
-                //ball
-                mPaint.setColor(game.currentColor);
-                ballDrawable.draw(canvas, mPaint);
+                //draw ball
+                drawModels(canvas, game);
                 //text
                 mPaint.setColor(TEXT_COLOR);
                 canvas.drawText("Tap to match the colors.", 0, textSize, mPaint);
@@ -142,15 +178,18 @@ public class GameView extends SurfaceView implements GameRenderer {
                 drawModels(canvas, game);   //draw models as they are
                 //with transparency layer
                 mPaint.setColor(BACKGROUND);
-                mPaint.setAlpha(223);
+                mPaint.setAlpha(191);
                 canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
                 //draw text
                 mPaint.setColor(TEXT_COLOR);
                 canvas.drawText("Paused game. Tap to resume.", 0, textSize, mPaint);
                 break;
             case CirechGame.GAME_OVER_STATE:    //draw game over screen
-                mPaint.setColor(game.currentColor);
-                ballDrawable.draw(canvas, mPaint);
+                drawModels(canvas, game);
+                //with transparency layer
+                mPaint.setColor(BACKGROUND);
+                mPaint.setAlpha(191);
+                canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
                 mPaint.setColor(TEXT_COLOR);
                 canvas.drawText("Game over. Score: " + game.score, 0, textSize, mPaint);
                 canvas.drawText("High Score: " + game.highScore, 0, textSize * 2, mPaint);
@@ -160,6 +199,7 @@ public class GameView extends SurfaceView implements GameRenderer {
         }
     }
 
+
     /**
      * This method draws the game objects.
      * @param canvas    the target canvas
@@ -167,12 +207,14 @@ public class GameView extends SurfaceView implements GameRenderer {
      */
     private void drawModels(Canvas canvas, CirechGame game) {
         //draw ball
-        mPaint.setColor(game.currentColor);     //pick the color from the game value
+        if (game.currentColor) mPaint.setColor(color1);
+        else mPaint.setColor(color0);   //pick the color from the game value
         ballDrawable.draw(canvas, mPaint);      //draw on canvas
         //draw barriers one by one
         for (Barrier b : game.barriers) {
             barrierDrawable.x = b.position * barrierDrawable.k;
-            mPaint.setColor(b.color);
+            if (b.color) mPaint.setColor(color1);
+            else mPaint.setColor(color0);
             barrierDrawable.draw(canvas, mPaint);
         }
     }
@@ -206,6 +248,7 @@ public class GameView extends SurfaceView implements GameRenderer {
     public void setReady(boolean isReady) {
         this.isReady = isReady;
     }
+
 
     /**
      * Represents a ball that is drawable on this surface.
