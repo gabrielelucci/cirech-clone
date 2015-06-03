@@ -21,93 +21,117 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * This is a game about fast response and reflexes. Basically, Some random coloured rectangles (we
+ * can call them barriers) move toward the 'cirech' and you have to match their color before they
+ * collide.
+ * The game handles various states,
  * MODEL.
  * Created by Gabriele Lucci on 31/07/14.
  * Project: Cirech Clone
  */
 public class CirechGame implements GameEngine {
-    // Games states.
+    // Game states
+    /**
+     * Game is "menu" state.
+     */
     public static final int MENU_STATE = 0;
+
+    /**
+     * Game is in play state. When in this state, the game updates.
+     */
     public static final int PLAY_STATE = 1;
+
+    /**
+     * Game is paused, values are saved and not updated until play state is triggered again.
+     */
     public static final int PAUSE_STATE = 2;
+
+    /**
+     * Game is over. show some kind of splash screen.
+     */
     public static final int GAME_OVER_STATE = 3;
-    // Game parameters.
+    // Game parameters, they tweak game mechanics.
+    /**
+     * Barriers start from position 0 and collide when they reach the limit.
+     */
     public static final float LIMIT = 1f;   // should be 1.
     private static final float K = 0.5f;    // base speed multipliers (default: 0.5)
     private static final float BASE_SPEED = K / (float) GameThread.PREFERRED_FPS;
     private static final int NUMBER_OF_BARRIERS = 3;    //(default: 3)
     private static final float DISTANCE_DELTA = LIMIT / (float) NUMBER_OF_BARRIERS;
-
+    // Game values.
     /**
      * Current game color.
      */
     volatile boolean currentColor;    // current game color
+
     /**
      *
      */
     volatile Barrier[] barriers;
+
     /**
      * Current game score.
      */
     volatile int score;
+
     /**
      * High score.
      */
     int highScore;
+
     /**
      * Current game state.
      */
     private int currentState;
+
     /**
      * Holds the current barrier speed.
      */
     private float barrierSpeed;
+
     /**
      * "Pointer" to last barrier in the barrier array. Should not be allocated.
      */
     private Barrier lastBarrier;    // reference to last barrier
+
     /**
      * Random generator for this game.
      */
     private Random rand;
+
     /**
      * List of implemented callbacks for this game.
      */
     private List<Callback> callbacks;
 
-    // INIT METHODS
-
     /**
-     * Empty constructor.
+     * Default constructor.
      */
     public CirechGame() {
         init();
-        currentState = MENU_STATE;
         reset();
     }
 
     /**
-     *
      * @param callback
      */
     public CirechGame(Callback callback) {
         init();
         setCallback(callback);
-        setCurrentState(MENU_STATE);
         reset();
     }
 
     /**
      * Utility method for initializing important things.
-     * Should only be called once and in constructors methods.
+     * Should be called once and in constructors methods.
      */
     private void init() {
         callbacks = new LinkedList<>();
         rand = new Random(System.nanoTime());
         barriers = new Barrier[NUMBER_OF_BARRIERS];
+        currentState = MENU_STATE;
     }
-
-    // GAME RELATED METHODS
 
     /**
      * Resets the game. Called every time you start a new game.
@@ -134,8 +158,10 @@ public class CirechGame implements GameEngine {
     }
 
     /**
-     * Randomly generates the first barriers. Should be called once, to generate new barriers use
+     * Randomly generates the first set of barriers.
+     * Should be called once, to generate new barriers use
      * reGenerateBarrier method.
+     *
      * @see this.reGenerateBarrier
      */
     private void generateBarriers() {
@@ -192,7 +218,6 @@ public class CirechGame implements GameEngine {
 
 
     /**
-     *
      * @return the current game state.
      */
     public int getCurrentState() {
@@ -201,7 +226,7 @@ public class CirechGame implements GameEngine {
 
     /**
      * Changes the state of the game.
-     *
+     * The value must be in the set of the predefined states, for example MENU_STATE
      * @param state the new state
      */
     public synchronized void setCurrentState(int state) {
@@ -242,9 +267,10 @@ public class CirechGame implements GameEngine {
     }
 
     /**
-     *
+     * Interface for callbacks. When the game state changes,
      */
     public interface Callback {
         void stateChanged(int newState);
     }
+
 }

@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'redKey'
-            keyPassword 'rosarossa'
-            storeFile file('/home/gabriele/Documenti/myKeyStore.jks')
-            storePassword 'valgan'
-        }
-    }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
@@ -18,15 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    productFlavors {
+    }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-        debug {
-            signingConfig signingConfigs.config
-        }
     }
 }
 
