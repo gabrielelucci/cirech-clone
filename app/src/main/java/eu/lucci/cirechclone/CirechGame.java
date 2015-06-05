@@ -130,7 +130,7 @@ public class CirechGame implements GameEngine {
         callbacks = new LinkedList<>();
         rand = new Random(System.nanoTime());
         barriers = new Barrier[NUMBER_OF_BARRIERS];
-        currentState = MENU_STATE;
+        setCurrentState(MENU_STATE);
     }
 
     /**
@@ -192,7 +192,7 @@ public class CirechGame implements GameEngine {
      */
     @Override
     public synchronized void updateGame() {
-        if (currentState == PLAY_STATE && barriers != null) {
+        if (currentState == PLAY_STATE) {
             // move barriers
             for (Barrier b : barriers) {
                 b.move(barrierSpeed);

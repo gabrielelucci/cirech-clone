@@ -17,6 +17,7 @@
 package eu.lucci.cirechclone;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -34,15 +35,15 @@ import java.util.Random;
  * @see android.view.SurfaceView
  */
 public class GameView extends SurfaceView implements GameRenderer {
+    /**
+     * This is the text color.
+     */
+    public static final int TEXT_COLOR = Color.WHITE;
     private static final String TAG = "GameView";
     /**
      * This is the background color.
      */
-    public final int BACKGROUND = Color.BLACK;
-    /**
-     * This is the text color.
-     */
-    public final int TEXT_COLOR = Color.WHITE;
+    private int background;
     /**
      * This is the drawable model for the ball.
      */
@@ -101,6 +102,9 @@ public class GameView extends SurfaceView implements GameRenderer {
      * This method initializes the models.
      */
     private void init() {
+        Resources mResources = getResources();
+        background = mResources.getColor(R.color.GameBackground);
+
         ballDrawable = new BallDrawable();
         barrierDrawable = new BarrierDrawable();
         rand = new Random();
@@ -156,7 +160,7 @@ public class GameView extends SurfaceView implements GameRenderer {
     private synchronized void render(Canvas canvas, CirechGame game) {
         if (canvas == null) return;
         //draw background
-        canvas.drawColor(BACKGROUND);
+        canvas.drawColor(background);
         switch (game.getCurrentState()) {
             case CirechGame.MENU_STATE:     //draw menu state
                 //draw ball
@@ -177,7 +181,7 @@ public class GameView extends SurfaceView implements GameRenderer {
             case CirechGame.PAUSE_STATE:    //draw paused game
                 drawModels(canvas, game);   //draw models as they are
                 //with transparency layer
-                mPaint.setColor(BACKGROUND);
+                mPaint.setColor(background);
                 mPaint.setAlpha(191);
                 canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
                 //draw text
@@ -187,7 +191,7 @@ public class GameView extends SurfaceView implements GameRenderer {
             case CirechGame.GAME_OVER_STATE:    //draw game over screen
                 drawModels(canvas, game);
                 //with transparency layer
-                mPaint.setColor(BACKGROUND);
+                mPaint.setColor(background);
                 mPaint.setAlpha(191);
                 canvas.drawRect(0, 0, getWidth(), getHeight(), mPaint);
                 mPaint.setColor(TEXT_COLOR);
@@ -258,11 +262,15 @@ public class GameView extends SurfaceView implements GameRenderer {
         float centerY;
         float radius;
         /**
-          * @param canvas
+         * @param canvas
          * @param paint
          */
         void draw(Canvas canvas, Paint paint) {
-            canvas.drawCircle(centerX, centerY, radius, paint);
+            canvas.drawCircle(
+                    centerX,
+                    centerY,
+                    radius,
+                    paint);
         }
 
     }
@@ -271,16 +279,16 @@ public class GameView extends SurfaceView implements GameRenderer {
      * Represents the drawable model of a barrier.
      */
     private class BarrierDrawable {
-        float h;
-        float x;
-        float k;
+        float h;    // height
+        float x;    // vertical position
+        float k;    // vertical bound, max drawable v. position
         void draw(Canvas canvas, Paint paint) {
             canvas.drawRect(
                     0,          // left
-                    x - h,
-                    getWidth(), // to right
-                    x,
-                    mPaint
+                    x - h,      // top
+                    getWidth(), // right
+                    x,          // bottom
+                    mPaint      // paint
             );
         }
     }

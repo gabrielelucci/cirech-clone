@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.view.View;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,6 +34,10 @@ import java.io.IOException;
  * Main activity of the app.
  */
 public class MainActivity extends Activity implements SurfaceHolder.Callback, CirechGame.Callback, GameThread.Callback {
+    /**
+     * Logcat tag for debugging.
+     */
+    private final static String TAG = "MainActivity";
     /**
      * MODEL
      */
@@ -51,10 +54,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * The game loop. (CONTROLLER).
      */
     private GameThread mLoop;
-    /**
-     * Logcat tag for debugging.
-     */
-    private final static String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,23 +144,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
                 break;
             case CirechGame.GAME_OVER_STATE:
                 break;
-        }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        //make the app full screen.
-        if (hasFocus) {
-            mGameView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE
-            );
         }
     }
 

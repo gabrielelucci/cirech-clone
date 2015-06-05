@@ -1,8 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="android:Theme.Material.NoActionBar.Fullscreen">
         <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">@color/GameBackground</item>
     </style>
 
 </resources>
