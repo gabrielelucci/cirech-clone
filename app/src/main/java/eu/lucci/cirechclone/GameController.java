@@ -26,13 +26,16 @@ import android.view.View;
  * Basically it is a touch event handler.
  * Implements the callback to be invoked when a touch event is dispatched to this view.
  * The callback will be invoked before the touch event is given to the view.
+ *
  * @see android.view.View.OnTouchListener
  */
 public class GameController implements View.OnTouchListener {
+
     /**
      * The gesture detector. In this case needed to detect swipes.
      */
     private GestureDetector swipeDetector;
+
     /**
      * The game to control.
      */
@@ -50,7 +53,8 @@ public class GameController implements View.OnTouchListener {
 
     /**
      * Called when a touch event is dispatched to a view.
-     * @param view The view the touch event has been dispatched to.
+     *
+     * @param view  The view the touch event has been dispatched to.
      * @param event The MotionEvent object containing full information about the event.
      * @return True if the listener has consumed the event, false otherwise.
      */

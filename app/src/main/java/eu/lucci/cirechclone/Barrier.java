@@ -21,7 +21,9 @@ package eu.lucci.cirechclone;
  * Project: Cirech Clone
  */
 public class Barrier {
+
     boolean color;
+
     volatile float position;
 
     public Barrier(boolean color, float position) {
@@ -32,9 +34,11 @@ public class Barrier {
     /**
      * Muove la barriera della distanza specificata.
      * Il metodo è synchronized per evitare che più thread spostino la barriera allo stesso tempo.
+     *
      * @param speed la distanza da aggiungere alla posizione, quindi la velocità.
      */
     public synchronized void move(double speed) {
         position += speed;
     }
+
 }

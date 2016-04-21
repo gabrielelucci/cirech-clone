@@ -30,6 +30,7 @@ import java.util.Random;
  * Project: Cirech Clone
  */
 public class CirechGame implements GameEngine {
+
     // Game states
     /**
      * Game is "menu" state.
@@ -50,15 +51,21 @@ public class CirechGame implements GameEngine {
      * Game is over. show some kind of splash screen.
      */
     public static final int GAME_OVER_STATE = 3;
+
     // Game parameters, they tweak game mechanics.
     /**
      * Barriers start from position 0 and collide when they reach the limit.
      */
     public static final float LIMIT = 1f;   // should be 1.
+
     private static final float K = 0.5f;    // base speed multipliers (default: 0.5)
+
     private static final float BASE_SPEED = K / (float) GameThread.PREFERRED_FPS;
+
     private static final int NUMBER_OF_BARRIERS = 3;    //(default: 3)
+
     private static final float DISTANCE_DELTA = LIMIT / (float) NUMBER_OF_BARRIERS;
+
     // Game values.
     /**
      * Current game color.

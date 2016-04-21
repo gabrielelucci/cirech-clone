@@ -21,25 +21,29 @@ package eu.lucci.cirechclone;
  * Project: Cirech Clone
  */
 public class GameThread extends Thread {
+
     /**
      * The preferred update frequency of the loop.
      */
     public final static int PREFERRED_FPS = 60;  // updates per second (Hz)
+
     /**
      * Preferred sleep time of this thread, equal to (1 second / PREFERRED_FPS).
      */
-    private final static long FRAME_PERIOD = 1000 /  PREFERRED_FPS;
+    private final static long FRAME_PERIOD = 1000 / PREFERRED_FPS;
+
     /**
      * Max renders to skip while the game is behind.
      */
     private final static int MAX_SKIPPED_FRAMES = 5;
 
     private GameEngine game;
+
     private GameRenderer renderer;
 
     private boolean running;    //thread running flag
-    private GameThread.Callback callback;
 
+    private GameThread.Callback callback;
 
     /**
      * @param renderer the renderer
@@ -89,13 +93,16 @@ public class GameThread extends Thread {
 
     /**
      * Eseguito automaticamente all'inizio di run(), prima del loop di gioco.
+     *
      * @see this.onStartup()
      */
     private void startup() {
         if (callback != null) callback.onStartup();
     }
+
     /**
      * Eseguito automaticamente alla fine di run(), dopo il loop di gioco.
+     *
      * @see this.onStartup()
      */
     private void shutdown() {
@@ -116,6 +123,7 @@ public class GameThread extends Thread {
      */
     public interface Callback {
         void onStartup();
+
         void onShutdown();
     }
 }

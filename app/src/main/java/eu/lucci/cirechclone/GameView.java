@@ -30,43 +30,55 @@ import java.util.Random;
 /**
  * This class represents the game rendering engine. It uses the drawing surface of SurfaceView.
  * This is a temporary solution, I want to replace it with a GLSurfaceView.
+ *
  * @author gabriele lucci
  * @version 1/5/2015
  * @see android.view.SurfaceView
  */
 public class GameView extends SurfaceView implements GameRenderer {
+
     /**
      * This is the text color.
      */
     public static final int TEXT_COLOR = Color.WHITE;
+
     private static final String TAG = "GameView";
+
     /**
      * This is the background color.
      */
     private int background;
+
     /**
      * This is the drawable model for the ball.
      */
     private BallDrawable ballDrawable;
+
     /**
      * This is the drawable model for the barriers.
      */
     private BarrierDrawable barrierDrawable;
+
     private Paint mPaint;
+
     private boolean isReady;
+
     // measures and bounds
     /**
      * Size of the text. To be initialized by the method measure()
      */
     private float textSize;
+
     /**
      * 1st game color.
      */
     private int color0;
+
     /**
      * 2nd game color.
      */
     private int color1;
+
     private Random rand;
 
     /**
@@ -78,7 +90,6 @@ public class GameView extends SurfaceView implements GameRenderer {
     }
 
     /**
-     *
      * @param context
      * @param attrs
      */
@@ -88,7 +99,6 @@ public class GameView extends SurfaceView implements GameRenderer {
     }
 
     /**
-     *
      * @param context
      * @param attrs
      * @param defStyle
@@ -155,7 +165,7 @@ public class GameView extends SurfaceView implements GameRenderer {
 
     /**
      * @param canvas
-     * @param game the game to be rendered.
+     * @param game   the game to be rendered.
      */
     private synchronized void render(Canvas canvas, CirechGame game) {
         if (canvas == null) return;
@@ -206,8 +216,9 @@ public class GameView extends SurfaceView implements GameRenderer {
 
     /**
      * This method draws the game objects.
-     * @param canvas    the target canvas
-     * @param game      the game to draw
+     *
+     * @param canvas the target canvas
+     * @param game   the game to draw
      */
     private void drawModels(Canvas canvas, CirechGame game) {
         //draw ball
@@ -232,7 +243,7 @@ public class GameView extends SurfaceView implements GameRenderer {
         ballDrawable.centerX = getWidth() / 2;
         ballDrawable.centerY = getHeight() - ballDrawable.radius;
         barrierDrawable.h = getHeight() / 14;
-        barrierDrawable.k = (getHeight()- ballDrawable.radius * 2) / CirechGame.LIMIT;
+        barrierDrawable.k = (getHeight() - ballDrawable.radius * 2) / CirechGame.LIMIT;
         textSize = getWidth() / 15;
         mPaint.setTextSize(textSize);
     }
@@ -261,6 +272,7 @@ public class GameView extends SurfaceView implements GameRenderer {
         float centerX;
         float centerY;
         float radius;
+
         /**
          * @param canvas
          * @param paint
@@ -282,6 +294,7 @@ public class GameView extends SurfaceView implements GameRenderer {
         float h;    // height
         float x;    // vertical position
         float k;    // vertical bound, max drawable v. position
+
         void draw(Canvas canvas, Paint paint) {
             canvas.drawRect(
                     0,          // left

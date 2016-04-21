@@ -34,22 +34,27 @@ import java.io.IOException;
  * Main activity of the app.
  */
 public class MainActivity extends Activity implements SurfaceHolder.Callback, CirechGame.Callback, GameThread.Callback {
+
     /**
      * Logcat tag for debugging.
      */
     private final static String TAG = "MainActivity";
+
     /**
      * MODEL
      */
     private CirechGame mGame;
+
     /**
      * VIEW
      */
     private GameView mGameView;
+
     /**
      * CONTROLLER
      */
     private GameController mController;
+
     /**
      * The game loop. (CONTROLLER).
      */
@@ -170,7 +175,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      */
     @Override
     public void stateChanged(int newStatus) {
-        switch (mGame.getCurrentState()){
+        switch (mGame.getCurrentState()) {
             case CirechGame.MENU_STATE:
                 break;
             case CirechGame.PLAY_STATE:
@@ -202,6 +207,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * This represents the file writer task, it is an asynchronous task, so we can save data
      * without hogging the main UI thread. Also this will avoid ANR dialog if something goes wrong.
      * See also the file reader task.
+     *
      * @see eu.lucci.cirechclone.MainActivity.ReadFileTask
      * @see android.os.AsyncTask
      */
@@ -238,9 +244,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
      * This represents the file reader task. In this task we read the game data from file.
      * Also this will avoid ANR dialog if something goes wrong.
      * See also the file saving task.
+     *
      * @see eu.lucci.cirechclone.MainActivity.SaveFileTask
      */
     private class ReadFileTask extends AsyncTask<Void, Void, Integer> {
+
         /**
          * Logcat tag for debug.
          */
@@ -250,6 +258,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
          * This method performs background operations.
          * The result of the computation must be returned by this step and will be passed back
          * to the last step.
+         *
          * @param params
          * @return result of the background computation
          */
@@ -273,6 +282,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
         /**
          * The result of the background computation is passed to this step as a parameter.
          * Here we post the result of the async operation.
+         *
          * @param integer result of the background computation
          */
         @Override
