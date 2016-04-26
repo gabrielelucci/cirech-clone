@@ -116,7 +116,7 @@ public class GameView extends SurfaceView implements GameRenderer {
      */
     private void init() {
         Resources mResources = getResources();
-        background = mResources.getColor(R.color.GameBackground);
+        background = mResources.getColor(R.color.game_background);
 
         ballDrawable = new BallDrawable();
         barrierDrawable = new BarrierDrawable();
