@@ -194,8 +194,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Ci
         Log.d(TAG, "game loop stopped");
     }
 
-    public void updateGameScore(int newScore) {
-        mGame.score = newScore;
+    public void updateGameHighScore(int newScore) {
+        mGame.highScore = newScore;
     }
 
 

@@ -67,6 +67,6 @@ public class ReadScoreTask extends AsyncTask<Void, Void, Integer> {
     @Override
     protected void onPostExecute(Integer data) {
         MainActivity activity = weakReference.get();
-        if (activity != null) activity.updateGameScore(data);
+        if (activity != null) activity.updateGameHighScore(data);
     }
 }
